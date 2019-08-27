@@ -6,7 +6,8 @@
 int main(void)
 {
     obtenerHTMLDeArchivo();
-    listarAcciones();
+    listarEspecieVariacion();
+    //listarAcciones();
     return 0;
 }
 
@@ -169,5 +170,15 @@ void listarAcciones(){
                listadoAcciones[i].maximo,listadoAcciones[i].minimo,listadoAcciones[i].cierreAnt,
                listadoAcciones[i].volNominal,listadoAcciones[i].montoOperado,listadoAcciones[i].cantidadNominal,
                listadoAcciones[i].horaCotizacion);
+    }
+}
+
+void listarEspecieVariacion(){
+    double variacionMaxima = 0.5;
+    printf("ESPECIE|VARIACION\n");
+    for(int i=0;i<20;i++){
+        if(listadoAcciones[i].variacion > variacionMaxima){
+            printf("%7s|%9.2f\n",listadoAcciones[i].nombre, listadoAcciones[i].variacion);
+        }
     }
 }

@@ -6,6 +6,7 @@ int pclose(FILE *stream);
 int main();
 void obtenerHTMLDeWget();
 void obtenerHTMLDeArchivo();
+void listarEspecieVariacion();
 
 typedef struct{
     char nombre[255];
