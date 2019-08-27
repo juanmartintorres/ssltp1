@@ -5,9 +5,40 @@
 
 int main(void)
 {
-    obtenerHTMLDeArchivo();
-    listarEspecieVariacion();
-    //listarAcciones();
+    int input=0;
+
+    printf("*******************************************  ¡Hola Bienvenido!  *******************************************\n");
+    printf("                                             Eligir un reporte:                                            \n");
+    printf("\n");
+    printf("Ingrese el numero 1 si desea listar en pantalla las especies cuyo %% de variacion supera el 0.5%%          \n");
+    printf("Ingrese el numero 2 las cotizaciones de compra y de venta.                                                 \n");
+    printf("Ingrese el numero 3 si desea listar el mismo reporte que la opcion 1 pero en una tabla html.               \n");
+    printf("Ingrese el numero 4 si desea salir.                                                                        \n");
+    scanf("\n%d", &input);
+
+    while(input != 4){
+        obtenerHTMLDeArchivo();
+
+        switch(input){
+            case 1:
+                    listarEspecieVariacion();
+                    break;
+            case 2:
+                    listarAcciones();
+                    break;
+            case 3:
+                    printf("Opcion no implementada\n");
+                    break;
+
+            default: printf("Opcion Incorrecta, por favor volver a ingresar una opcion correcta.\n");
+        }
+
+        printf("Ingrese una nueva opcion:");
+
+        scanf("\n%d", &input);
+    }
+    printf("Gracias por utilizar nuestro sistema.\n");
+
     return 0;
 }
 
