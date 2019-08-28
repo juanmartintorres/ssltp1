@@ -7,11 +7,11 @@ int main(void)
 {
     int input=0;
 
-    printf("*******************************************  �Hola Bienvenido!  *******************************************\n");
+    printf("*******************************************  ¡Hola Bienvenido!  *******************************************\n");
     printf("                                             Eligir un reporte:                                            \n");
     printf("\n");
     printf("Ingrese el numero 1 si desea listar en pantalla las especies cuyo %% de variacion supera el 0.5%%          \n");
-    printf("Ingrese el numero 2 las cotizaciones de compra y de venta.                                                 \n");
+    printf("Ingrese el numero 2 para exportar a información a una tabla csv.                                           \n");
     printf("Ingrese el numero 3 si desea listar el mismo reporte que la opcion 1 pero en una tabla html.               \n");
     printf("Ingrese el numero 4 si desea salir.                                                                        \n");
     scanf("\n%d", &input);
@@ -27,7 +27,7 @@ int main(void)
                     listarAcciones();
                     break;
             case 3:
-                    printf("Opcion no implementada\n");
+                    generarTablaHTML();
                     break;
 
             default: printf("Opcion Incorrecta, por favor volver a ingresar una opcion correcta.\n");
@@ -194,14 +194,16 @@ void leerCampoNumerico(char result[1048575], int* cursor,char campo[255]){
 }
 
 void listarAcciones(){
+    FILE *tabla = fopen("BOLSAR.csv","w");
+    fprintf(tabla,"; Especie; Precio de compra; Precio de venta; Apertura; Precio Máximo; Precio Mínimo\n");
+    if (tabla == NULL) return -1;
     for(int i=0;i<20;i++){
-        printf("%i;%s;%s;%i;%f;%f;%i;%f;%f;%f;%f;%f;%f;%i;%i;%i;%s\n",i,listadoAcciones[i].nombre,listadoAcciones[i].vto,listadoAcciones[i].cantidadNominal,
-               listadoAcciones[i].precioCompra,listadoAcciones[i].precioVenta,listadoAcciones[i].cantNominal2,
-               listadoAcciones[i].ultimo,listadoAcciones[i].variacion,listadoAcciones[i].apertura,
-               listadoAcciones[i].maximo,listadoAcciones[i].minimo,listadoAcciones[i].cierreAnt,
-               listadoAcciones[i].volNominal,listadoAcciones[i].montoOperado,listadoAcciones[i].cantidadNominal,
-               listadoAcciones[i].horaCotizacion);
+        fprintf(tabla,"%i;%s;%f;%f;%f;%f;%f\n",i,
+                listadoAcciones[i].nombre,listadoAcciones[i].precioCompra,listadoAcciones[i].precioVenta,
+                listadoAcciones[i].apertura,listadoAcciones[i].maximo,listadoAcciones[i].minimo);
     }
+    printf("Se ha creado la tabla con exito.\n");
+    fclose(tabla);
 }
 
 void listarEspecieVariacion(){
@@ -212,4 +214,22 @@ void listarEspecieVariacion(){
             printf("%7s|%9.2f\n",listadoAcciones[i].nombre, listadoAcciones[i].variacion);
         }
     }
+}
+
+void generarTablaHTML(){
+    FILE *tablaHTML = fopen("Variaciones.html","w");
+    fprintf(tablaHTML,"<table border = \"1\"> <tr> <th>Especie</th> <th>Variacion</th> </tr>\n");
+    double variacionMaxima = 0.5;
+    for(int i=0;i<20;i++){
+        if(listadoAcciones[i].variacion > variacionMaxima){
+            if(listadoAcciones[i].precioCompra < listadoAcciones[i].apertura && listadoAcciones[i].precioVenta < listadoAcciones[i].apertura)
+                fprintf(tablaHTML,"<tr style=\"color:red;\">");
+            else
+                fprintf(tablaHTML,"<tr>");
+            fprintf(tablaHTML,"<td> %7s </td> <td>%9.2f</td> </tr>\n",listadoAcciones[i].nombre, listadoAcciones[i].variacion);
+        }
+    }
+    fprintf(tablaHTML,"</tr> </table>");
+    fclose(tablaHTML);
+    printf("Se ha generado con exito la tabla en formato HTML");
 }
