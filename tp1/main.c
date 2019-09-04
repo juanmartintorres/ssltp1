@@ -231,5 +231,5 @@ void generarTablaHTML(){
     }
     fprintf(tablaHTML,"</tr> </table>");
     fclose(tablaHTML);
-    printf("Se ha generado con exito la tabla en formato HTML");
+    printf("Se ha generado con exito la tabla en formato HTML\n");
 }
